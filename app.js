@@ -5,7 +5,7 @@ import fs from 'fs';
 
 const app = express();
 app.use(express.static('public'));
-const upload = multer({ dest: 'uploads/' });
+const upload = multer({ dest: 'uploads/', });
 app.use(upload.single('video'));
 
 app.post('/upload', async (req, res) => {
@@ -15,7 +15,8 @@ app.post('/upload', async (req, res) => {
 
     if (uploadedVideo.mimetype !== 'video/quicktime') {
       console.log('Invalid file type:', uploadedVideo.mimetype);
-      return res.status(400).send('Invalid file type');
+      fs.unlinkSync(uploadedVideo.path);
+      return res.status(400).send(`Invalid file type!\nFile provided file is of type: ${uploadedVideo.mimetype} (.${uploadedVideo.originalname.split('.')[1]})\nBut only files of type: video/quicktime (.mov) are supported for conversion!`);
     }
 
     const dest = 'converted/' + uploadedVideo.originalname.split('.')[0] + '.mp4';
@@ -26,6 +27,7 @@ app.post('/upload', async (req, res) => {
       ffmpeg(uploadedVideo.path)
         .on('end', () => {
           console.log('Conversion completed for:', uploadedVideo.originalname);
+          fs.unlinkSync(uploadedVideo.path); // Delete the original file after conversion is completed);
           resolve();
         })
         .on('error', err => {
