@@ -13,3 +13,4 @@ That's it! Now you can access the server at `http://localhost:8080/`
 ## Post Scriptum
 
 Demo is also available at [mov2mp4](https://nix.mercusysddns.com/api/mov2mp4) until the end of the month(Feb 28 2025)
+(Demo server limits uploads to ~2GB as to not be overwhelmed, it's running on a raspberry pi afterall)
