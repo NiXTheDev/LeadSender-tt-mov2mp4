@@ -94,4 +94,7 @@ app.get(`${subpath}/download/:filename`, (req, res) => {
   });
 });
 
-app.listen(port, () => {console.log('started on port:', port, '\nUnder hostname:', hostname, '\nUnder subpath:', subpath, `\nFull link: http://${hostname}:${port}${subpath}`);});
+app.listen(port, () => {
+  const displayPort = hostname === 'localhost' ? `:${port}` : '';
+  console.log(`started on port: ${port}`, `\nUnder hostname: ${hostname}`, `\nUnder subpath: ${subpath}`, `\nFull link: http://${hostname}${displayPort}${subpath}`);
+});
