@@ -8,7 +8,7 @@
 1. Install the dependencies with `npm ci`
 2. Start the server with `node app.js`
 
-That's it! Now you can access the server at `http://localhost:8080/`
+That's it! Now you can access the server at `http://localhost:8080/` (which also includes the steps to use it)
 
 ## Post Scriptum
 
