@@ -14,6 +14,12 @@ app.use(express.static('public'));
 const upload = multer({ dest: 'uploads/', });
 app.use(upload.single('video'));
 
+['public', 'public/converted', 'uploads'].forEach(dir => {
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir);
+  }
+});
+
 app.all(`${subpath}/`, (_, res) => {
   res.send(`
     <h1>Welcome to the MOV to MP4 converter!</h1>
