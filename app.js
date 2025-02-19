@@ -2,13 +2,19 @@ import express from 'express';
 import ffmpeg from 'fluent-ffmpeg';
 import multer from 'multer';
 import fs from 'fs';
+import dotenv from 'dotenv';
+dotenv.config('./');
+
+const hostname = process.env.HOST || "localhost";
+const subpath = process.env.SUBPATH || "";
+const port = process.env.PORT || 8080;
 
 const app = express();
 app.use(express.static('public'));
 const upload = multer({ dest: 'uploads/', });
 app.use(upload.single('video'));
 
-app.post('/upload', async (req, res) => {
+app.post(`${subpath}/upload`, async (req, res) => {
   try {
     console.log('Received a file upload request');
     const uploadedVideo = req.file;
@@ -27,7 +33,7 @@ app.post('/upload', async (req, res) => {
       ffmpeg(uploadedVideo.path)
         .on('end', () => {
           console.log('Conversion completed for:', uploadedVideo.originalname);
-          fs.unlinkSync(uploadedVideo.path); // Delete the original file after conversion is completed);
+          fs.unlinkSync(uploadedVideo.path);
           resolve();
         })
         .on('error', err => {
@@ -48,7 +54,7 @@ app.post('/upload', async (req, res) => {
   }
 });
 
-app.get('/download/:filename', (req, res) => {
+app.get(`${subpath}/download/:filename`, (req, res) => {
   const filename = req.params.filename;
   const target = 'public/converted/' + filename;
   console.log('Download request for:', filename);
@@ -74,4 +80,4 @@ app.get('/download/:filename', (req, res) => {
   });
 });
 
-app.listen(8080, () => {console.log('started on port 8080');});
+app.listen(port, () => {console.log('started on port:', port, '\nUnder hostname:', hostname, '\nUnder subpath:', subpath, `\nFull link: http://${hostname}:${port}${subpath}`);});
