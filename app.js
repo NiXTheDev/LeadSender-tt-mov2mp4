@@ -7,7 +7,7 @@ dotenv.config('./');
 
 const hostname = process.env.HOST || "localhost";
 const subpath = process.env.SUBPATH || "";
-const port = process.env.PORT || 8080;
+const port = 8080;
 
 const app = express();
 app.use(express.static('public'));
