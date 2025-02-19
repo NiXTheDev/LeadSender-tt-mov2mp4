@@ -14,6 +14,14 @@ app.use(express.static('public'));
 const upload = multer({ dest: 'uploads/', });
 app.use(upload.single('video'));
 
+app.any(`${subpath}/`, (_, res) => {
+  res.send(`
+    <h1>Welcome to the MOV to MP4 converter!</h1>
+    <p>Make POST requests with the file in the <code>video</code> field to <code>${subpath}/upload</code> to upload a .mov file and get a download link to a converted .mp4 file in response, be warned, it might take a while and any other file type will not be accepted.</p>
+    <p>Make GET requests to <code>${subpath}/download/:filename</code> to download a previously converted .mov file, which is now in .mp4!</p>
+  `);
+});
+
 app.post(`${subpath}/upload`, async (req, res) => {
   try {
     console.log('Received a file upload request');
