@@ -1,3 +1,6 @@
+# Verdict:
+Scheduled meeting was missed, assumed to be rejected
+
 # Project requirements
 
 - ffmpeg to be installed and accesible via PATH or FFMPEG_PATH environment variable
